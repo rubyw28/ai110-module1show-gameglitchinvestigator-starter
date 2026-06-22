@@ -41,14 +41,15 @@ I decided a bug was fixed by running both automated tests and manual testing in 
 
 ## 4. What did you learn about Streamlit and state?
 
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+Streamlit works by re-running your entire Python script from top to bottom every time the user interacts with the app (clicks a button, types in a text box, etc.). This means any regular variables you define get reset to their initial values on every interaction. To keep data persistent across these reruns, you use `st.session_state`, which is like a dictionary that survives the script re-execution. For example, `st.session_state.secret` stores the secret number so it doesn't change every time you submit a guess. Without session state, the game would be impossible to win because the answer would keep changing!
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+**Habit to reuse:** I want to continue using the practice of writing pytest cases for bugs before and after fixing them. This "test-driven verification" approach gave me confidence that my fixes actually worked, and the tests serve as documentation for future developers.
+
+**What I'd do differently:** Next time, I would make smaller, more frequent commits as I work through each phase, rather than doing all the work and then splitting commits at the end. This creates a more authentic git history.
+
+**How this changed my thinking:** This project showed me that AI-generated code can look correct but contain subtle logic errors that only become apparent through testing. AI is a powerful starting point, but human review and verification are essential - I need to be the quality control, not just accept what AI produces.
 
