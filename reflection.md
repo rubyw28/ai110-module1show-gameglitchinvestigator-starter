@@ -4,36 +4,38 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+When I first ran the game, the UI loaded correctly and appeared functional at first glance. However, once I started playing, I quickly noticed the hints were completely backwards - when I guessed too high, the game told me to "Go HIGHER!" which sent me in the wrong direction. I also noticed that the difficulty selector was misleading: choosing "Easy" still displayed "Guess a number between 1 and 100" even though the actual range was 1-20. Additionally, the scoring system awarded fewer points than expected when winning, making the game feel unfair.
 
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
-| Input | Expected Behavior | Actual Behavior | Console Output / Error |
-|-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Input                    | Expected Behavior                         | Actual Behavior                            | Console Output / Error |
+| ------------------------ | ----------------------------------------- | ------------------------------------------ | ---------------------- |
+| Guess 75 (secret is 50)  | Hint says "📉 Go LOWER!"                  | Hint says "📈 Go HIGHER!"                  | none                   |
+| Select "Easy" difficulty | UI says "Guess a number between 1 and 20" | UI says "Guess a number between 1 and 100" | none                   |
+| Win on first attempt     | Score = 90 points (100 - 10×1)            | Score = 80 points (100 - 10×2)             | none                   |
+
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+I used **Cursor AI (Claude)** as my primary AI tool for this project. I asked it to help me identify bugs in the codebase and understand what was going wrong with the game logic.
+
+**Correct AI suggestion:** The AI correctly identified that the `check_guess` function in `app.py` had inverted hint messages - when `guess > secret`, the code returned "Go HIGHER!" instead of "Go LOWER!". I verified this by looking at lines 37-40 in the code and testing manually: when I guessed 75 and the secret was 50, the game incorrectly told me to go higher.
+
+**Incorrect/Misleading AI suggestion:** While AI suggestions were generally helpful, one limitation was that AI couldn't actually run the game to verify its findings. It analyzed code statically but couldn't confirm real runtime behavior. I had to manually test each bug by playing the game myself to verify the issues were real and reproducible, rather than just trusting the AI's code analysis.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+I decided a bug was fixed by running both automated tests and manual testing in the live game. After each fix, I ran `pytest tests/ -v` to ensure all unit tests passed, then played the game to confirm the fix worked in practice.
+
+**Test I ran:** I asked AI to generate pytest cases targeting the specific bugs. For example, `test_too_high_hint_says_lower()` checks that when guess=75 and secret=50, the hint message contains "LOWER". Running pytest showed all 7 tests passed, confirming the logic was correct.
+
+**AI's role in testing:** AI generated the test cases in `test_game_logic.py` based on the bugs we identified. It also noticed the original tests were broken (they expected a string but the function returns a tuple), and helped fix them to properly unpack `(outcome, message)`. This taught me that tests need to match the actual function signatures.
 
 ---
 
@@ -49,3 +51,4 @@ Document at least 3 bugs you found. Add rows as needed.
   - This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
